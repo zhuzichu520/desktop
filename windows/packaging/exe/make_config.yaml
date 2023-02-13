@@ -1,0 +1,8 @@
+appId: 1D7A5470-942F-4649-8B69-122888AB0BA5
+appPublisher: LeanFlutter
+appPublisherUrl: https://github.com/leanflutter/auto_updater
+display_name: Hello 世界
+create_desktop_icon: true
+install_dir_name: HELLO-WORLD
+locales:
+  - en
