@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 import 'screens/home.dart';
 import 'theme.dart';
@@ -34,16 +33,21 @@ void main() async {
   if (isDesktop) {
     await flutter_acrylic.Window.initialize();
     await WindowManager.instance.ensureInitialized();
+    await windowManager.hide();
+    windowManager.waitUntilReadyToShow().then((_) async {
+      await windowManager.setTitleBarStyle(
+        TitleBarStyle.hidden,
+        windowButtonVisibility: false,
+      );
+      await windowManager.setSize(const Size(755, 545));
+      await windowManager.setMinimumSize(const Size(350, 600));
+      await windowManager.center();
+      await windowManager.show();
+      await windowManager.setPreventClose(true);
+      await windowManager.setSkipTaskbar(false);
+    });
   }
   runApp(const MyApp());
-  doWhenWindowReady(() {
-    final win = appWindow;
-    win.minSize = const Size(755, 545);
-    win.size = const Size(350, 600);
-    win.alignment = Alignment.center;
-    win.title = appTitle;
-    win.show();
-  });
 }
 
 class MyApp extends StatelessWidget {
