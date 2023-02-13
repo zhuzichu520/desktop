@@ -17,12 +17,10 @@ class _HomePageState extends State<HomePage> with PageMixin {
   Widget build(BuildContext context) {
     assert(debugCheckHasFluentTheme(context));
     final theme = FluentTheme.of(context);
-
     return ScaffoldPage.scrollable(
       header: const PageHeader(
         title: Text('首页'),
       ), children: const [
-
     ],
     );
   }
