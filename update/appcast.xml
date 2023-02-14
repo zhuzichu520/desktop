@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+    <channel>
+        <title>title-我的程序</title>
+        <description>description-最近更新我的程序</description>
+        <language>en</language>
+        <item>
+            <title>Version 1.0.0+2</title>
+            <sparkle:releaseNotesLink>
+                http://localhost:5000/release_notes.html
+            </sparkle:releaseNotesLink>
+            <pubDate>Mon, 14 Feb 2023 15:41:35 +0800</pubDate>
+            <enclosure url="http://localhost:5000/1.0.0+2/desktop-1.0.0+2-windows-setup.exe"
+                       sparkle:dsaSignature="MEQCIHkmM9xZyGRwJ8TBSrn+Iob+4rowZhOrmdJ8QaTju2SYAiAIFOJo7tF/UnJAf2OZsCcwfb2p1xuxefr+e0tjZ1AjJw=="
+                       sparkle:version="1.0.0+2"
+                       sparkle:os="windows"
+                       length="0"
+                       type="application/octet-stream" />
+        </item>
+    </channel>
+</rss>

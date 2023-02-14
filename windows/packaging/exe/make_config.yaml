@@ -1,8 +1,9 @@
-appId: 1D7A5470-942F-4649-8B69-122888AB0BA5
-appPublisher: LeanFlutter
-appPublisherUrl: https://github.com/leanflutter/auto_updater
-display_name: Hello 世界
+appId: 1D7A5470-942F-4649-8B69-321888AB0BA9
+appPublisher: zhuzichu
+appPublisherUrl: https://github.com/zhuzichu520/desktop
+display_name: 我的程序
 create_desktop_icon: true
-install_dir_name: HELLO-WORLD
+install_dir_name: my-desktop
 locales:
   - en
+  - zh
