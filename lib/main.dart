@@ -188,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                     ),
                   ),
-                  if (!kIsWeb) const WindowButtons(),
+                   const WindowButtons(),
                 ])
               ],
             ),
@@ -271,19 +271,6 @@ class _LinkPaneItemAction extends PaneItem {
   }
 }
 
-final buttonColors = WindowButtonColors(
-    iconNormal: const Color(0xFF805306),
-    mouseOver: const Color(0xFFF6A00C),
-    mouseDown: const Color(0xFF805306),
-    iconMouseOver: const Color(0xFF805306),
-    iconMouseDown: const Color(0xFFFFD500));
-
-final closeButtonColors = WindowButtonColors(
-    mouseOver: const Color(0xFFD32F2F),
-    mouseDown: const Color(0xFFB71C1C),
-    iconNormal: const Color(0xFF805306),
-    iconMouseOver: Colors.white);
-
 class WindowButtons extends StatefulWidget {
   const WindowButtons({Key? key}) : super(key: key);
 
@@ -298,30 +285,61 @@ class WindowButtonsState extends State<WindowButtons> {
     });
   }
 
+  void minimize() {
+    setState(() {
+      appWindow.minimize();
+    });
+  }
+
+  void close() {
+    setState(() {
+      appWindow.close();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    const spacer = SizedBox(width: 10.0);
     return Row(
       children: [
-        SizedBox(height: 50, child: MinimizeWindowButton(colors: buttonColors)),
+        SizedBox(
+            child: Tooltip(
+          message: "最小化",
+          child: IconButton(
+              icon: const Icon(FluentIcons.chrome_minimize),
+              onPressed: minimize),
+        )),
+        spacer,
         appWindow.isMaximized
             ? SizedBox(
-                height: 50,
-                child: RestoreWindowButton(
-                  colors: buttonColors,
-                  onPressed: maximizeOrRestore,
+                child: Tooltip(
+                  message: "还原",
+                  child: IconButton(
+                    icon: const Icon(FluentIcons.chrome_restore),
+                    onPressed: maximizeOrRestore,
+                  ),
                 ),
               )
             : SizedBox(
-                height: 50,
-                child: MaximizeWindowButton(
-                  colors: buttonColors,
-                  onPressed: maximizeOrRestore,
+                child: Tooltip(
+                  message: "最大化",
+                  child: IconButton(
+                    icon: const Icon(FluentIcons.chrome_full_screen),
+                    onPressed: maximizeOrRestore,
+                  ),
                 ),
               ),
+        spacer,
         SizedBox(
-          height: 50,
-          child: CloseWindowButton(colors: closeButtonColors),
+          child: Tooltip(
+            message: "关闭",
+            child: IconButton(
+              icon: const Icon(FluentIcons.chrome_close),
+              onPressed: close,
+            ),
+          ),
         ),
+        spacer
       ],
     );
   }
