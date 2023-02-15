@@ -99,19 +99,34 @@ class MyApp extends StatelessWidget {
               ),
             );
           },
-          initialRoute: '/',
-          routes: {'/': (context) => const MyHomePage()},
+          initialRoute: '/login',
+          routes: {'/': (context) => const MyHomePage(),'/login': (context) => const MyLoginPage()},
         );
       },
     );
   }
 }
 
+class MyLoginPage extends StatefulWidget{
+  const MyLoginPage({Key? key}) : super(key: key);
+  @override
+  State<StatefulWidget> createState() => _MyLoginPageState();
+}
+
+class _MyLoginPageState extends State<MyLoginPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<StatefulWidget> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
