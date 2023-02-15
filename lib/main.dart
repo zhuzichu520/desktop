@@ -12,6 +12,9 @@ import 'package:auto_updater/auto_updater.dart';
 import 'screens/home.dart';
 import 'screens/about.dart';
 import 'theme.dart';
+import 'widgets/action_bar.dart';
+import 'page/index.dart';
+import 'page/login.dart';
 
 const String appTitle = '我的程序';
 
@@ -100,7 +103,7 @@ class MyApp extends StatelessWidget {
             );
           },
           initialRoute: '/login',
-          routes: {'/': (context) => const MyHomePage(),'/login': (context) => const MyLoginPage()},
+          routes: {'/': (context) => const IndexPage(),'/login': (context) => const LoginPage()},
         );
       },
     );
@@ -184,30 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text(appTitle),
             );
           }(),
-          actions: SizedBox(
-            child: Row(
-              children: [
-                Expanded(child: MoveWindow()),
-                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(end: 8.0),
-                    child: ToggleSwitch(
-                      content: const Text('夜间模式'),
-                      checked: FluentTheme.of(context).brightness.isDark,
-                      onChanged: (v) {
-                        if (v) {
-                          appTheme.mode = ThemeMode.dark;
-                        } else {
-                          appTheme.mode = ThemeMode.light;
-                        }
-                      },
-                    ),
-                  ),
-                   const WindowButtons(),
-                ])
-              ],
-            ),
-          )),
+          actions: const ActionBar()),
       pane: NavigationPane(
           selected: index,
           onChanged: (i) {
@@ -282,80 +262,6 @@ class _LinkPaneItemAction extends PaneItem {
         itemIndex: itemIndex,
         autofocus: autofocus,
       ),
-    );
-  }
-}
-
-class WindowButtons extends StatefulWidget {
-  const WindowButtons({Key? key}) : super(key: key);
-
-  @override
-  WindowButtonsState createState() => WindowButtonsState();
-}
-
-class WindowButtonsState extends State<WindowButtons> {
-  void maximizeOrRestore() {
-    setState(() {
-      appWindow.maximizeOrRestore();
-    });
-  }
-
-  void minimize() {
-    setState(() {
-      appWindow.minimize();
-    });
-  }
-
-  void close() {
-    setState(() {
-      appWindow.close();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    const spacer = SizedBox(width: 10.0);
-    return Row(
-      children: [
-        SizedBox(
-            child: Tooltip(
-          message: "最小化",
-          child: IconButton(
-              icon: const Icon(FluentIcons.chrome_minimize),
-              onPressed: minimize),
-        )),
-        spacer,
-        appWindow.isMaximized
-            ? SizedBox(
-                child: Tooltip(
-                  message: "还原",
-                  child: IconButton(
-                    icon: const Icon(FluentIcons.chrome_restore),
-                    onPressed: maximizeOrRestore,
-                  ),
-                ),
-              )
-            : SizedBox(
-                child: Tooltip(
-                  message: "最大化",
-                  child: IconButton(
-                    icon: const Icon(FluentIcons.chrome_full_screen),
-                    onPressed: maximizeOrRestore,
-                  ),
-                ),
-              ),
-        spacer,
-        SizedBox(
-          child: Tooltip(
-            message: "关闭",
-            child: IconButton(
-              icon: const Icon(FluentIcons.chrome_close),
-              onPressed: close,
-            ),
-          ),
-        ),
-        spacer
-      ],
     );
   }
 }
