@@ -1,8 +1,12 @@
+import 'package:desktop/page/loading.dart';
+import 'package:desktop/repository/mail_repository.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
 
 import 'package:provider/provider.dart';
-import '../theme.dart';
+import 'package:enough_mail/enough_mail.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import '../widgets/action_bar.dart';
+import '../widgets/toast.dart';
 
 const String appTitle = '添加账号';
 
@@ -32,12 +36,32 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loadingNotifier = context.watch<LoadingNotifier>();
+    final nav = Navigator.of(context);
+    final toast = Toast(context);
 
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
+    final TextEditingController emailController =
+        TextEditingController(text: "zhuzichu520@outlook.com");
+    final TextEditingController passwordController =
+        TextEditingController(text: "qaioasd520");
 
-    final appTheme = context.watch<AppTheme>();
-    final theme = FluentTheme.of(context);
+    void accountAdd() async {
+      loadingNotifier.showLoading();
+      try {
+        await MailRepository.login(
+            emailController.text, passwordController.text);
+      } on Exception catch (e) {
+        loadingNotifier.hideLoading();
+        toast.error('failed with $e');
+        return;
+      }
+      loadingNotifier.hideLoading();
+      toast.success("message");
+      // nav.pushNamed('/index');
+    }
+
+    var spacer = const SizedBox(height: 30);
+
     return NavigationView(
       key: viewKey,
       appBar: NavigationAppBar(
@@ -50,47 +74,47 @@ class _LoginPageState extends State<LoginPage> {
             );
           }(),
           actions: const ActionBar()),
-      content: Container(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: 300,
-                child: TextBox(
-                  controller: emailController,
-                  placeholder: "E-mail地址",
-                ),
+      content: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              width: 300,
+              child: TextBox(
+                controller: emailController,
+                placeholder: "E-mail地址",
               ),
-              const SizedBox(height: 30),
-              SizedBox(
-                width: 300,
-                child: TextBox(
-                  controller: passwordController,
-                  placeholder: "密码",
-                  obscureText: true,
-                ),
+            ),
+            spacer,
+            SizedBox(
+              width: 300,
+              child: TextBox(
+                controller: passwordController,
+                placeholder: "密码",
+                obscureText: true,
               ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            ),
+            spacer,
+            SizedBox(
+              width: 300,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   FilledButton(
-                    onPressed: () {
-                      // 添加按钮点击事件
-                    },
+                    onPressed: accountAdd,
                     child: const Text('添加'),
                   ),
+                  const SizedBox(width: 30),
                   FilledButton(
                     onPressed: () {
-                      // 取消按钮点击事件
+                      appWindow.close();
                     },
                     child: const Text('取消'),
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

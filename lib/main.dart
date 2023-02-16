@@ -1,3 +1,5 @@
+import 'package:desktop/page/loading.dart';
+import 'package:desktop/repository/mail_repository.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
@@ -28,6 +30,7 @@ bool get isDesktop {
 }
 
 void main() async {
+  await MailRepository.initialize();
   WidgetsFlutterBinding.ensureInitialized();
 
   String feedURL = 'http://localhost:5000/appcast.xml';
@@ -61,8 +64,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => AppTheme(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AppTheme()),
+        ChangeNotifierProvider(create: (context) => LoadingNotifier()),
+      ],
       builder: (context, _) {
         final appTheme = context.watch<AppTheme>();
         return FluentApp(
@@ -94,24 +100,33 @@ class MyApp extends StatelessWidget {
               child: NavigationPaneTheme(
                 data: NavigationPaneThemeData(
                   backgroundColor: appTheme.windowEffect !=
-                          flutter_acrylic.WindowEffect.disabled
+                      flutter_acrylic.WindowEffect.disabled
                       ? Colors.transparent
                       : null,
                 ),
-                child: child!,
+                child: Stack(
+                  children: [
+                    child!,
+                    const LoadingPage()
+                  ],
+                ),
               ),
             );
           },
-          initialRoute: '/login',
-          routes: {'/': (context) => const IndexPage(),'/login': (context) => const LoginPage()},
+          initialRoute: '/',
+          routes: {
+            '/': (context) => const LoginPage(),
+            '/index': (context) => const IndexPage()
+          },
         );
       },
     );
   }
 }
 
-class MyLoginPage extends StatefulWidget{
+class MyLoginPage extends StatefulWidget {
   const MyLoginPage({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _MyLoginPageState();
 }
@@ -122,8 +137,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
     return Container();
   }
 }
-
-
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
