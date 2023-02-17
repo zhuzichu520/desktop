@@ -56,8 +56,7 @@ class _LoginPageState extends State<LoginPage> {
         return;
       }
       loadingNotifier.hideLoading();
-      toast.success("message");
-      // nav.pushNamed('/index');
+      nav.pushNamed('/index');
     }
 
     var spacer = const SizedBox(height: 30);
@@ -74,47 +73,50 @@ class _LoginPageState extends State<LoginPage> {
             );
           }(),
           actions: const ActionBar()),
-      content: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              width: 300,
-              child: TextBox(
-                controller: emailController,
-                placeholder: "E-mail地址",
+      content: Container(
+        decoration: const BoxDecoration(color: Colors.white),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: 300,
+                child: TextBox(
+                  controller: emailController,
+                  placeholder: "E-mail地址",
+                ),
               ),
-            ),
-            spacer,
-            SizedBox(
-              width: 300,
-              child: TextBox(
-                controller: passwordController,
-                placeholder: "密码",
-                obscureText: true,
+              spacer,
+              SizedBox(
+                width: 300,
+                child: TextBox(
+                  controller: passwordController,
+                  placeholder: "密码",
+                  obscureText: true,
+                ),
               ),
-            ),
-            spacer,
-            SizedBox(
-              width: 300,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  FilledButton(
-                    onPressed: accountAdd,
-                    child: const Text('添加'),
-                  ),
-                  const SizedBox(width: 30),
-                  FilledButton(
-                    onPressed: () {
-                      appWindow.close();
-                    },
-                    child: const Text('取消'),
-                  ),
-                ],
+              spacer,
+              SizedBox(
+                width: 300,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    FilledButton(
+                      onPressed: accountAdd,
+                      child: const Text('添加'),
+                    ),
+                    const SizedBox(width: 30),
+                    FilledButton(
+                      onPressed: () {
+                        appWindow.close();
+                      },
+                      child: const Text('取消'),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

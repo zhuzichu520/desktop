@@ -72,45 +72,9 @@ class _IndexPageState extends State<IndexPage> {
             );
           }(),
           actions: const ActionBar()),
-      pane: NavigationPane(
-          selected: index,
-          onChanged: (i) {
-            setState(() => index = i);
-          },
-          header: SizedBox(
-            height: kOneLineTileHeight,
-            child: ShaderMask(
-              shaderCallback: (rect) {
-                final color = appTheme.color.defaultBrushFor(
-                  theme.brightness,
-                );
-                return LinearGradient(
-                  colors: [
-                    color,
-                    color,
-                  ],
-                ).createShader(rect);
-              },
-              child: const FlutterLogo(
-                style: FlutterLogoStyle.horizontal,
-                size: 80.0,
-                textColor: Colors.white,
-                duration: Duration.zero,
-              ),
-            ),
+          content: Container(
+            decoration: const BoxDecoration(color: Colors.white),
           ),
-          displayMode: appTheme.displayMode,
-          indicator: () {
-            switch (appTheme.indicator) {
-              case NavigationIndicators.end:
-                return const EndNavigationIndicator();
-              case NavigationIndicators.sticky:
-              default:
-                return const StickyNavigationIndicator();
-            }
-          }(),
-          items: originalItems,
-          footerItems: footerItems),
     );
   }
 }

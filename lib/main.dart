@@ -113,7 +113,7 @@ class MyApp extends StatelessWidget {
               ),
             );
           },
-          initialRoute: '/',
+          initialRoute: '/index',
           routes: {
             '/': (context) => const LoginPage(),
             '/index': (context) => const IndexPage()

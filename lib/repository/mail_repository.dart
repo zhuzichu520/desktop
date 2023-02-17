@@ -28,4 +28,9 @@ class MailRepository {
           'user.name', 'password', AuthMechanism.login);
     }
   }
+
+  static Future<List<Mailbox>> listMailboxes() async {
+    final mailboxes = await _imapClient.listMailboxes();
+    return mailboxes;
+  }
 }
