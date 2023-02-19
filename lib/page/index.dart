@@ -1,11 +1,7 @@
+import 'package:desktop/repository/mail_repository.dart';
+import 'package:enough_mail/enough_mail.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
-import 'package:url_launcher/link.dart';
-
-import 'package:provider/provider.dart';
-import '../theme.dart';
-import '../screens/home.dart';
-import '../screens/about.dart';
-import '../widgets/action_bar.dart';
+import '../widgets/body_view.dart';
 
 const String appTitle = '我的程序';
 
@@ -17,38 +13,14 @@ class IndexPage extends StatefulWidget {
 }
 
 class _IndexPageState extends State<IndexPage> {
-  bool value = false;
 
-  int index = 0;
-
-  final viewKey = GlobalKey(debugLabel: 'Navigation View Key');
-
-  final List<NavigationPaneItem> originalItems = [
-    PaneItem(
-      icon: const Icon(FluentIcons.home),
-      title: const Text('首页'),
-      body: const HomePage(),
-    )
-  ];
-
-  final List<NavigationPaneItem> footerItems = [
-    PaneItemSeparator(),
-    PaneItem(
-      icon: const Icon(FluentIcons.alert_solid),
-      title: const Text('关于'),
-      body: About(),
-    ),
-    _LinkPaneItemAction(
-      icon: const Icon(FluentIcons.open_source),
-      title: const Text('源码'),
-      link: 'https://github.com/zhuzichu520/desktop',
-      body: const SizedBox.shrink(),
-    ),
-  ];
+  List<TreeViewItem> items = [TreeViewItem(content: const Text("文件夹"), value: "文件夹", children: [])];
 
   @override
   void initState() {
     super.initState();
+    print("开始下载");
+    loadListMailboxes();
   }
 
   @override
@@ -56,59 +28,48 @@ class _IndexPageState extends State<IndexPage> {
     super.dispose();
   }
 
+  void loadListMailboxes() async {
+    var listMailBoxes = await MailRepository.listMailboxes();
+    print(listMailBoxes);
+    var treeView = _convertToTree(listMailBoxes);
+    setState(() {
+      items = treeView;
+    });
+    // print('mailboxes: $listMailBoxes');
+  }
+
+  List<TreeViewItem> _convertToTree(List<Mailbox> data){
+    var root = TreeViewItem(content: const Text("文件夹"), value: "文件夹",children: []);
+    for (var item in data) {
+      var node = root;
+      var parts = item.path.split("/");
+      for (var part in parts) {
+        var child = node.children.firstWhere((c) => c.value == part, orElse: () {
+          var newChild = TreeViewItem(content: Text(part), value: part,children: []);
+          node.children.add(newChild);
+          return newChild;
+        });
+        node = child;
+      }
+    }
+    return [root];
+  }
+
   @override
   Widget build(BuildContext context) {
-    final appTheme = context.watch<AppTheme>();
     final theme = FluentTheme.of(context);
-    return NavigationView(
-      key: viewKey,
-      appBar: NavigationAppBar(
-          automaticallyImplyLeading: false,
-          height: 50,
-          title: () {
-            return const Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: Text(appTitle),
-            );
-          }(),
-          actions: const ActionBar()),
-          content: Container(
-            decoration: const BoxDecoration(color: Colors.white),
-          ),
-    );
-  }
-}
-
-class _LinkPaneItemAction extends PaneItem {
-  _LinkPaneItemAction({
-    required super.icon,
-    required this.link,
-    required super.body,
-    super.title,
-  });
-
-  final String link;
-
-  @override
-  Widget build(
-    BuildContext context,
-    bool selected,
-    VoidCallback? onPressed, {
-    PaneDisplayMode? displayMode,
-    bool showTextOnTop = true,
-    bool? autofocus,
-    int? itemIndex,
-  }) {
-    return Link(
-      uri: Uri.parse(link),
-      builder: (context, followLink) => super.build(
-        context,
-        selected,
-        followLink,
-        displayMode: displayMode,
-        showTextOnTop: showTextOnTop,
-        itemIndex: itemIndex,
-        autofocus: autofocus,
+    return BodyView(
+      title: appTitle,
+      child: Row(
+        children: [
+          SizedBox(
+              width: 250,
+              child: SizedBox.expand(
+                child: TreeView(
+                  items: items,
+                ),
+              ))
+        ],
       ),
     );
   }

@@ -1,11 +1,11 @@
 import 'package:desktop/page/loading.dart';
 import 'package:desktop/repository/mail_repository.dart';
+import 'package:desktop/widgets/body_view.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
 
 import 'package:provider/provider.dart';
 import 'package:enough_mail/enough_mail.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import '../widgets/action_bar.dart';
 import '../widgets/toast.dart';
 
 const String appTitle = '添加账号';
@@ -61,62 +61,49 @@ class _LoginPageState extends State<LoginPage> {
 
     var spacer = const SizedBox(height: 30);
 
-    return NavigationView(
-      key: viewKey,
-      appBar: NavigationAppBar(
-          automaticallyImplyLeading: false,
-          height: 50,
-          title: () {
-            return const Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: Text(appTitle),
-            );
-          }(),
-          actions: const ActionBar()),
-      content: Container(
-        decoration: const BoxDecoration(color: Colors.white),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: 300,
-                child: TextBox(
-                  controller: emailController,
-                  placeholder: "E-mail地址",
-                ),
+    return BodyView(
+      title: appTitle,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              width: 300,
+              child: TextBox(
+                controller: emailController,
+                placeholder: "E-mail地址",
               ),
-              spacer,
-              SizedBox(
-                width: 300,
-                child: TextBox(
-                  controller: passwordController,
-                  placeholder: "密码",
-                  obscureText: true,
-                ),
+            ),
+            spacer,
+            SizedBox(
+              width: 300,
+              child: TextBox(
+                controller: passwordController,
+                placeholder: "密码",
+                obscureText: true,
               ),
-              spacer,
-              SizedBox(
-                width: 300,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    FilledButton(
-                      onPressed: accountAdd,
-                      child: const Text('添加'),
-                    ),
-                    const SizedBox(width: 30),
-                    FilledButton(
-                      onPressed: () {
-                        appWindow.close();
-                      },
-                      child: const Text('取消'),
-                    ),
-                  ],
-                ),
+            ),
+            spacer,
+            SizedBox(
+              width: 300,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  FilledButton(
+                    onPressed: accountAdd,
+                    child: const Text('添加'),
+                  ),
+                  const SizedBox(width: 30),
+                  FilledButton(
+                    onPressed: () {
+                      appWindow.close();
+                    },
+                    child: const Text('取消'),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

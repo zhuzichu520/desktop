@@ -30,7 +30,7 @@ class MailRepository {
   }
 
   static Future<List<Mailbox>> listMailboxes() async {
-    final mailboxes = await _imapClient.listMailboxes();
+    final mailboxes = await _imapClient.listMailboxes(recursive: false);
     return mailboxes;
   }
 }
